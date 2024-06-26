@@ -1,13 +1,10 @@
 package com.crype.bankapp.presentation.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankapp.R
-import com.crype.bankapp.ui.theme.BackgroundCard
 import com.crype.bankapp.ui.theme.Green
 import com.crype.bankapp.ui.theme.Grey60
 import com.crype.bankapp.ui.theme.Grey65
@@ -27,24 +23,7 @@ import com.crype.bankapp.ui.theme.Yellow
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
-fun ListView(itemsCount:Int, senderName:String, date:String, transactionProgress: String,money: String){
-    LazyColumn(
-        modifier = Modifier
-            .background(color = BackgroundCard, shape = RoundedCornerShape(12.dp))
-            .padding(horizontal = 15.dp),
-    ) {
-        items(itemsCount) {
-            TransactionInfo(
-                senderName = senderName,
-                date = date,
-                transactionProgress = transactionProgress,
-                money = money)
-        }
-    }
-}
-
-@Composable
-fun TransactionInfo (
+fun TransactionInfo(
     senderName: String,
     date: String,
     transactionProgress: String,
