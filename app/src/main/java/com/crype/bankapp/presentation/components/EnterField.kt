@@ -59,9 +59,8 @@ fun EnterField(title: String, keyboardType: KeyboardType) {
                 fontSize = 16.sp,
                 fontFamily = Typography.bodyMedium.fontFamily,
                 fontWeight = FontWeight.Normal,
-                color = Color.White
+                color = Color.White,
             ),
-
-            )
+        )
     }
 }
