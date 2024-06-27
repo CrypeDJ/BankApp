@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.crype.bankapp.presentation.screen.TransactionInfoScreen
+import com.crype.bankapp.domain.model.TransactionModel
+import com.crype.bankapp.presentation.screen.AllTransactionsScreen
 import com.crype.bankapp.ui.theme.BankAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,9 +31,11 @@ class MainActivity : ComponentActivity() {
                         .background(color = Color.Black)
                         .fillMaxSize()
                 ) {
-                    TransactionInfoScreen()
+                    AllTransactionsScreen(
+                        transactionsNumber = 10,
+                        transactionsModel = TransactionModel()
+                    )
                 }
-
             }
         }
     }

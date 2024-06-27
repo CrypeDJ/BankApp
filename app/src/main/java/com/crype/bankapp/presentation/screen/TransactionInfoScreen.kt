@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.crype.bankapp.domain.TransactionModel
+import com.crype.bankapp.domain.model.TransactionModel
 import com.crype.bankapp.presentation.components.EnterButton
 import com.crype.bankapp.presentation.components.TextField
 import com.crype.bankingapp.ui.theme.Typography
@@ -67,7 +67,7 @@ fun TransactionInfoScreen() {
                     )
                 }
             }
-            EnterButton(label = "Okey")
+            EnterButton(label = "Okay")
         }
     }
 }

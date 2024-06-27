@@ -1,27 +1,45 @@
 package com.crype.bankapp.presentation.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.crype.bankapp.domain.TransactionModel
+import com.crype.bankapp.domain.model.TransactionModel
 import com.crype.bankapp.presentation.components.ListView
 import com.crype.bankapp.presentation.components.TopBar
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTransactionsScreen(
     transactionsNumber: Int,
     transactionsModel: TransactionModel
 ) {
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     Scaffold(
-        topBar = { TopBar(title = "All transactions") },
+        topBar = {
+            TopBar(
+                title = "All transactions",
+                onFilterClick = {
+                    scope.launch {
+                        sheetState.show()
+                    }
+                }
+            )
+        },
         containerColor = Color.Black,
         modifier = Modifier
             .navigationBarsPadding()
@@ -41,6 +59,20 @@ fun AllTransactionsScreen(
                 transactionProgress = transactionsModel.transactionStatus,
                 money = transactionsModel.money
             )
+        }
+    }
+    if (sheetState.isVisible) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                scope.launch {
+                    sheetState.hide()
+                }
+            },
+            sheetState = sheetState,
+            containerColor = Color.Black,
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            FilterScreen()
         }
     }
 }
