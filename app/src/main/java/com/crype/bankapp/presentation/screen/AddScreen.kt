@@ -63,12 +63,8 @@ fun AddScreen() {
                             else -> KeyboardType.Text
                         }
                     )
-
-
                 }
-
             }
-
             EnterButton(label = "Okey")
         }
     }

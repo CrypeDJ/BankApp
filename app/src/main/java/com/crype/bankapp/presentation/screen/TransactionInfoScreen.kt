@@ -8,19 +8,16 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankapp.domain.TransactionModel
 import com.crype.bankapp.presentation.components.EnterButton
-import com.crype.bankapp.presentation.components.EnterField
 import com.crype.bankapp.presentation.components.TextField
 import com.crype.bankingapp.ui.theme.Typography
 
@@ -58,15 +55,14 @@ fun TransactionInfoScreen() {
             ) {
                 val transactionModel = TransactionModel()
                 fields.forEach { label ->
-
                     TextField(
                         title = label,
-                        text = when(label){
+                        text = when (label) {
                             "Transaction was applied in" -> transactionModel.senderName
-                                "Transaction number" ->transactionModel.transactionNumber
-                            "Date" ->transactionModel.date
-                            "Transaction status"->transactionModel.transactionStatus
-                            else ->transactionModel.money
+                            "Transaction number" -> transactionModel.transactionNumber
+                            "Date" -> transactionModel.date
+                            "Transaction status" -> transactionModel.transactionStatus
+                            else -> transactionModel.money
                         }
                     )
                 }
@@ -78,6 +74,6 @@ fun TransactionInfoScreen() {
 
 @Preview
 @Composable
-fun TransactionInfoScreenPreview(){
+fun TransactionInfoScreenPreview() {
     TransactionInfoScreen()
 }

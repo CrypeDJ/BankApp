@@ -18,7 +18,6 @@ import com.crype.bankingapp.ui.theme.Typography
 @Composable
 fun EnterButton (
     label: String,
-    //onClick: () ->Unit
 ){
     Button(
         onClick = { /*TODO*/ },

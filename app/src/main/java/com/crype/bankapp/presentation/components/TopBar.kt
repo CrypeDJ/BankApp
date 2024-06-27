@@ -20,8 +20,6 @@ import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
 fun TopBar(
-    //onBackClick:() -> Unit,
-    //onFilterClick:() -> Unit,
     title: String
 ) {
     Row(
