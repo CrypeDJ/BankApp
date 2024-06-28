@@ -1,4 +1,4 @@
-package com.crype.bankapp.domain
+package com.crype.bankapp.domain.model
 
 data class TransactionModel(
     val senderName:String = "OOO “Company”",

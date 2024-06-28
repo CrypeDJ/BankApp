@@ -9,18 +9,16 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
-fun TextField(title: String, text: String){
-    Column{
+fun TextField(title: String, text: String) {
+    Column {
         Text(
             text = title,
             fontSize = 18.sp,
@@ -29,7 +27,7 @@ fun TextField(title: String, text: String){
             color = Color.White,
             modifier = Modifier.padding(bottom = 10.dp)
         )
-        OutlinedCard (
+        OutlinedCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 15.dp),
@@ -38,10 +36,10 @@ fun TextField(title: String, text: String){
             colors = CardDefaults.outlinedCardColors().copy(
                 containerColor = Color.Transparent
             )
-        ){
+        ) {
             Text(
-                text = if(title == "Amount") "\$"+text
-                    else text,
+                text = if (title == "Amount") "\$" + text
+                else text,
                 fontSize = 16.sp,
                 fontFamily = Typography.bodyMedium.fontFamily,
                 fontWeight = FontWeight.Normal,

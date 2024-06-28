@@ -28,15 +28,14 @@ fun AccountName(
     accountName: String,
     numberOfAccount: String,
     lastNumbersOfCard: String,
-    onClick: () ->Unit
+    onClick: () -> Unit,
+    isShowArrow: Boolean
 ) {
-
     Box(
         modifier = Modifier
             .background(color = BackgroundCard, shape = RoundedCornerShape(16.dp))
             .padding(10.dp)
             .clickable { onClick() },
-
     ) {
         Row(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 5.dp),
@@ -76,15 +75,16 @@ fun AccountName(
                     modifier = Modifier.padding(vertical = 2.dp)
                 )
             }
-            Image(
-                painter = painterResource(id = R.drawable.arrow_forward_grey),
-                contentDescription = "forward",
-                modifier = Modifier
-                    .height(18.dp)
-                    .align(Alignment.CenterVertically),
-                alpha = 0.6f,
-
+            if (isShowArrow) {
+                Image(
+                    painter = painterResource(id = R.drawable.arrow_forward_grey),
+                    contentDescription = "forward",
+                    modifier = Modifier
+                        .height(18.dp)
+                        .align(Alignment.CenterVertically),
+                    alpha = 0.6f,
                 )
+            }
         }
     }
 }

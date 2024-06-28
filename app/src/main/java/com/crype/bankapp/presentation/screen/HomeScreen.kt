@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,23 +26,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.crype.bankapp.domain.model.AccountModel
+import com.crype.bankapp.domain.model.TransactionModel
 import com.crype.bankapp.presentation.components.AccountName
 import com.crype.bankapp.presentation.components.ListView
 import com.crype.bankapp.ui.theme.Blue
 import com.crype.bankingapp.ui.theme.Typography
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    accountName: String,
-    numberOfAccount: String,
-    lastNumbersOfCard: String,
-    senderName: String,
-    date: String,
-    transactionProgress: String,
-    money: String,
-    itemsCount: Int
-
+    accountModel: AccountModel,
+    transactionModel: TransactionModel,
+    itemsCount: Int,
 ) {
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .background(color = Color.Black)
@@ -58,9 +62,15 @@ fun HomeScreen(
                 fontSize = 30.sp
             )
             AccountName(
-                accountName = accountName,
-                numberOfAccount = numberOfAccount,
-                lastNumbersOfCard = lastNumbersOfCard
+                accountName = accountModel.accountName,
+                numberOfAccount = accountModel.numberOfAccount,
+                lastNumbersOfCard = "•••• " + accountModel.lastNumbersOfCard,
+                isShowArrow = true,
+                onClick = {
+                    scope.launch {
+                        sheetState.show()
+                    }
+                }
             )
             Row {
                 Text(
@@ -86,10 +96,10 @@ fun HomeScreen(
             }
             ListView(
                 itemsCount = itemsCount,
-                senderName = senderName,
-                date = date,
-                transactionProgress = transactionProgress,
-                money = money
+                senderName = transactionModel.senderName,
+                date = transactionModel.date,
+                transactionProgress = transactionModel.transactionStatus,
+                money = transactionModel.money
             )
 
         }
@@ -110,8 +120,25 @@ fun HomeScreen(
                     .width(30.dp)
             )
         }
+        if (sheetState.isVisible) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    scope.launch {
+                        sheetState.hide()
+                    }
+                },
+                sheetState = sheetState,
+                containerColor = Color.Black
+            ) {
+                ChangeAccountScreen(
+                    accountAmount = 3,
+                    accountModel = AccountModel(),
+                    scope = scope,
+                    sheetState = sheetState
+                )
+            }
+        }
     }
-
 }
 
 
@@ -119,13 +146,8 @@ fun HomeScreen(
 @Composable
 fun HomeScreenPreview() {
     HomeScreen(
-        accountName = "Saving account",
-        numberOfAccount = "32509235032",
-        lastNumbersOfCard = "•••• 1234",
-        senderName = "OOO “Company”",
-        date = "01.02.2003",
-        transactionProgress = "Executed",
-        money = "10.09",
+        transactionModel = TransactionModel(),
+        accountModel = AccountModel(),
         itemsCount = 4
     )
 }
