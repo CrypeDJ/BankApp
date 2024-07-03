@@ -4,9 +4,7 @@ import android.widget.CalendarView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -21,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -39,11 +36,11 @@ import com.crype.bankingapp.ui.theme.Typography
 fun DatePickerComponent(
     title: String,
     hint: String,
-    borderColor: Color
+    borderColor: Color,
+    onDatePicked: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf("") }
-    var height by remember { mutableStateOf(0.dp) }
     Column {
         Text(
             text = title,
@@ -56,7 +53,6 @@ fun DatePickerComponent(
             expanded = expanded,
             onExpandedChange = {
                 expanded = it
-                if (!expanded) height = 0.dp
             }
         ) {
             OutlinedTextField(
@@ -91,13 +87,12 @@ fun DatePickerComponent(
                             contentDescription = null
                         )
                     }
-                }
+                },
             )
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = {
                     expanded = false
-                    height = 0.dp
                 },
             ) {
                 AndroidView(
@@ -108,25 +103,20 @@ fun DatePickerComponent(
                             date = System.currentTimeMillis()
                             maxDate = System.currentTimeMillis()
                         }
-
                     },
                     modifier = Modifier
                         .background(GreyCalendar)
-                        .fillMaxWidth()
-                        .onGloballyPositioned { layoutCoordinates ->
-                            val heightCal = layoutCoordinates.size.height
-                        },
+                        .fillMaxWidth(),
                     update = { calendarView ->
                         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
                             val date = "$dayOfMonth.${month + 1}.$year"
                             selectedDate = date
+                            onDatePicked(date)
                             expanded = false
-                            height = 0.dp
                         }
                     }
                 )
             }
-            Spacer(modifier = Modifier.height(height))
         }
     }
 }
@@ -134,5 +124,5 @@ fun DatePickerComponent(
 @Preview
 @Composable
 fun DatePickerPreview() {
-    DatePickerComponent(title = "Start date", hint = "Select start date", Color.White)
+    DatePickerComponent(title = "Start date", hint = "Select start date", Color.White, {})
 }

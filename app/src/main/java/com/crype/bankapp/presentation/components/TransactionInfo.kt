@@ -1,20 +1,23 @@
 package com.crype.bankapp.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankapp.R
+import com.crype.bankapp.domain.model.TransactionModel
 import com.crype.bankapp.ui.theme.Green
 import com.crype.bankapp.ui.theme.Grey60
 import com.crype.bankapp.ui.theme.Grey65
@@ -22,28 +25,29 @@ import com.crype.bankapp.ui.theme.Red
 import com.crype.bankapp.ui.theme.Yellow
 import com.crype.bankingapp.ui.theme.Typography
 
+
 @Composable
 fun TransactionInfo(
-    senderName: String,
-    date: String,
-    transactionProgress: String,
-    money: String
+    transactionModel: TransactionModel,
+    onItemClick: () -> Unit
 ) {
-    val color: Color = when (transactionProgress) {
+    val color: Color = when (transactionModel.transactionStatus) {
         "Executed" -> Green
         "Declined" -> Red
         else -> Yellow
     }
     Column {
         Row(
-            modifier = Modifier.padding(vertical = 17.dp)
+            modifier = Modifier
+                .padding(vertical = 17.dp)
+                .clickable { onItemClick() }
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
             ) {
                 Text(
-                    text = senderName,
+                    text = transactionModel.senderName,
                     fontSize = 20.sp,
                     fontFamily = Typography.bodyLarge.fontFamily,
                     fontWeight = FontWeight.Bold,
@@ -51,14 +55,14 @@ fun TransactionInfo(
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
                 Text(
-                    text = date,
+                    text = transactionModel.date,
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
                     color = Grey60,
                 )
                 Text(
-                    text = transactionProgress,
+                    text = transactionModel.transactionStatus,
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
@@ -66,7 +70,7 @@ fun TransactionInfo(
                 )
             }
             Text(
-                text = "\$$money",
+                text = "\$" + transactionModel.money,
                 fontSize = 18.sp,
                 fontFamily = Typography.bodyMedium.fontFamily,
                 fontWeight = FontWeight.Normal,
@@ -80,9 +84,17 @@ fun TransactionInfo(
                 modifier = Modifier.height(25.dp)
             )
         }
-        Divider(
+        HorizontalDivider(
             color = Grey65,
             thickness = 0.5.dp
         )
+    }
+}
+
+@Preview
+@Composable
+fun Preview(){
+    TransactionInfo(transactionModel = TransactionModel()) {
+        
     }
 }

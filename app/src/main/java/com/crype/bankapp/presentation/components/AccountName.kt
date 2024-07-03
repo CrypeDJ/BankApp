@@ -19,15 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankapp.R
+import com.crype.bankapp.domain.model.AccountModel
 import com.crype.bankapp.ui.theme.BackgroundCard
 import com.crype.bankapp.ui.theme.Grey60
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
 fun AccountName(
-    accountName: String,
-    numberOfAccount: String,
-    lastNumbersOfCard: String,
+    accountModel: AccountModel,
     onClick: () -> Unit,
     isShowArrow: Boolean
 ) {
@@ -51,7 +50,7 @@ fun AccountName(
                     .padding(horizontal = 10.dp)
             ) {
                 Text(
-                    text = accountName,
+                    text = accountModel.accountName,
                     fontSize = 16.sp,
                     fontFamily = Typography.bodyLarge.fontFamily,
                     fontWeight = FontWeight.Bold,
@@ -59,7 +58,7 @@ fun AccountName(
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
                 Text(
-                    text = numberOfAccount,
+                    text = accountModel.numberOfAccount,
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
@@ -67,7 +66,7 @@ fun AccountName(
                     modifier = Modifier.padding(vertical = 2.dp)
                 )
                 Text(
-                    text = lastNumbersOfCard,
+                    text = "•••• "+accountModel.lastNumbersOfCard,
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
