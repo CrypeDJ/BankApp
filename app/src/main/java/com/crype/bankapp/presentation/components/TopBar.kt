@@ -21,7 +21,8 @@ import com.crype.bankingapp.ui.theme.Typography
 @Composable
 fun TopBar(
     title: String,
-    onFilterClick:()->Unit
+    onFilterClick: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -34,9 +35,7 @@ fun TopBar(
             contentDescription = "",
             tint = Color.White,
             modifier = Modifier
-                .clickable {
-                    //onBackClick()
-                }
+                .clickable { onBackClick() }
                 .padding(start = 15.dp)
                 .height(20.dp)
         )

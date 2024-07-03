@@ -16,11 +16,12 @@ import com.crype.bankapp.ui.theme.BluePressed
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
-fun EnterButton (
+fun EnterButton(
     label: String,
-){
+    onClick: () -> Unit
+) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { onClick() },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 30.dp),
@@ -31,8 +32,7 @@ fun EnterButton (
             disabledContainerColor = Color.White
         ),
         shape = RoundedCornerShape(16.dp),
-
-        ) {
+    ) {
         Text(
             text = label,
             fontSize = 20.sp,

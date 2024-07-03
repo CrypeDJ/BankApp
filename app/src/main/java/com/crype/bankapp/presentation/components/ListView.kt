@@ -2,32 +2,32 @@ package com.crype.bankapp.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.crype.bankapp.domain.model.transactionList
+import com.crype.bankapp.navigation.Screen
 import com.crype.bankapp.ui.theme.BackgroundCard
 
 @Composable
 fun ListView(
-    itemsCount: Int,
-    senderName: String,
-    date: String,
-    transactionProgress: String,
-    money: String
+    navController: NavController,
 ) {
     LazyColumn(
         modifier = Modifier
             .background(color = BackgroundCard, shape = RoundedCornerShape(12.dp))
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp)
+            .wrapContentHeight(),
     ) {
-        items(itemsCount) {
+        items(transactionList.takeLast(5)) { transaction ->
             TransactionInfo(
-                senderName = senderName,
-                date = date,
-                transactionProgress = transactionProgress,
-                money = money
+                transactionModel = transaction,
+                onItemClick = { navController.navigate(route = Screen.TransactionInfoScreen.createRoute(transaction.transactionNumber)) }
             )
         }
     }

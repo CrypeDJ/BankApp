@@ -16,7 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.crype.bankapp.domain.model.TransactionModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.crype.bankapp.presentation.components.ListView
 import com.crype.bankapp.presentation.components.TopBar
 import kotlinx.coroutines.launch
@@ -24,8 +25,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllTransactionsScreen(
-    transactionsNumber: Int,
-    transactionsModel: TransactionModel
+    navController: NavController
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -37,6 +37,9 @@ fun AllTransactionsScreen(
                     scope.launch {
                         sheetState.show()
                     }
+                },
+                onBackClick = {
+                    navController.popBackStack()
                 }
             )
         },
@@ -53,11 +56,7 @@ fun AllTransactionsScreen(
                 .padding(bottom = 50.dp)
         ) {
             ListView(
-                itemsCount = transactionsNumber,
-                senderName = transactionsModel.senderName,
-                date = transactionsModel.date,
-                transactionProgress = transactionsModel.transactionStatus,
-                money = transactionsModel.money
+                navController = navController
             )
         }
     }
@@ -72,7 +71,13 @@ fun AllTransactionsScreen(
             containerColor = Color.Black,
             modifier = Modifier.fillMaxHeight()
         ) {
-            FilterScreen()
+            FilterScreen(
+                onFilterChoose = { startDate, endDate ->
+                    scope.launch {
+                        sheetState.hide()
+                    }
+                }
+            )
         }
     }
 }
@@ -80,9 +85,7 @@ fun AllTransactionsScreen(
 @Preview
 @Composable
 fun AllTransactionsScreenPreview() {
-    val transactionsModel: TransactionModel = TransactionModel()
     AllTransactionsScreen(
-        transactionsNumber = 10,
-        transactionsModel = transactionsModel
+        navController = rememberNavController()
     )
 }

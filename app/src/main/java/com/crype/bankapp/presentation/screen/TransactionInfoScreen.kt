@@ -16,13 +16,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.crype.bankapp.domain.model.TransactionModel
+import com.crype.bankapp.domain.model.transactionList
 import com.crype.bankapp.presentation.components.EnterButton
 import com.crype.bankapp.presentation.components.TextField
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
-fun TransactionInfoScreen() {
+fun TransactionInfoScreen(
+    navController: NavController,
+    transactionNumber: String
+) {
+    val transactionModel: TransactionModel? = transactionList.find { it.transactionNumber == transactionNumber }
     val fields = listOf(
         "Transaction was applied in",
         "Transaction number",
@@ -53,21 +60,22 @@ fun TransactionInfoScreen() {
             Column(
                 modifier = Modifier.imePadding()
             ) {
-                val transactionModel = TransactionModel()
                 fields.forEach { label ->
-                    TextField(
-                        title = label,
-                        text = when (label) {
-                            "Transaction was applied in" -> transactionModel.senderName
-                            "Transaction number" -> transactionModel.transactionNumber
-                            "Date" -> transactionModel.date
-                            "Transaction status" -> transactionModel.transactionStatus
-                            else -> transactionModel.money
-                        }
-                    )
+                    if (transactionModel != null) {
+                        TextField(
+                            title = label,
+                            text = when (label) {
+                                "Transaction was applied in" -> transactionModel.senderName
+                                "Transaction number" -> transactionModel.transactionNumber
+                                "Date" -> transactionModel.date
+                                "Transaction status" -> transactionModel.transactionStatus
+                                else -> transactionModel.money
+                            }
+                        )
+                    }
                 }
             }
-            EnterButton(label = "Okay")
+            EnterButton(label = "Okay", onClick = {navController.popBackStack()})
         }
     }
 }
@@ -75,5 +83,5 @@ fun TransactionInfoScreen() {
 @Preview
 @Composable
 fun TransactionInfoScreenPreview() {
-    TransactionInfoScreen()
+    TransactionInfoScreen(navController = rememberNavController(), "")
 }
