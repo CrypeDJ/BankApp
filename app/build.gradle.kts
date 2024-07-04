@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    //id ("com.google.devtools.ksp")  version "2.0.0-1.0.21"
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
@@ -62,13 +62,18 @@ dependencies {
     implementation(libs.androidx.material3)
 
     //Koin
-    //implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.core)
+    implementation(platform(libs.koin.bom))
+    testImplementation(libs.koin.text)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compat)
 
     //Room
-    //implementation(libs.androidx.room.runtime)
-    //implementation(libs.androidx.room.ktx)
-    //annotationProcessor(libs.androidx.room.compiler)
-    //ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 
     //Navigation
     implementation (libs.androidx.navigation.compose)
