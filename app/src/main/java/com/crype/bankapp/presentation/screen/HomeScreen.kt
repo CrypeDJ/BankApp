@@ -1,5 +1,7 @@
 package com.crype.bankapp.presentation.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,13 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.crype.bankapp.domain.model.accountList
 import com.crype.bankapp.navigation.Screen
 import com.crype.bankapp.presentation.components.AccountName
 import com.crype.bankapp.presentation.components.ListView
@@ -39,13 +38,15 @@ import com.crype.bankapp.ui.theme.Blue
 import com.crype.bankingapp.ui.theme.Typography
 import kotlinx.coroutines.launch
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController
+    navController: NavController,
+    homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val homeViewModel: HomeViewModel = viewModel()
     val index = homeViewModel.index.collectAsState().value
+    val accounts = homeViewModel.accounts.collectAsState().value
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     Box(
@@ -66,7 +67,7 @@ fun HomeScreen(
                 fontSize = 30.sp
             )
             AccountName(
-                accountModel = accountList[index],
+                accountModel = homeViewModel.findAccountById(index),
                 isShowArrow = true,
                 onClick = {
                     scope.launch {
@@ -97,11 +98,12 @@ fun HomeScreen(
                 )
             }
             ListView(
-                navController = navController
+                navController = navController,
+                false
             )
         }
         FloatingActionButton(
-            onClick = { navController.navigate(route = Screen.AddScreen.route) },
+            onClick = { navController.navigate(route = Screen.AddScreen.createRoute(index)) },
             shape = CircleShape,
             containerColor = Blue,
             modifier = Modifier
@@ -128,7 +130,7 @@ fun HomeScreen(
                 containerColor = Color.Black
             ) {
                 ChangeAccountScreen(
-                    accountList = accountList,
+                    accountList = accounts,
                     onSelectClick = { index ->
                         homeViewModel.updateIndex(index)
                         scope.launch {
@@ -139,13 +141,4 @@ fun HomeScreen(
             }
         }
     }
-}
-
-
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        rememberNavController()
-    )
 }

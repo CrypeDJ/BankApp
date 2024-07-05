@@ -12,12 +12,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
-import com.crype.bankapp.domain.model.TransactionModel
 import com.crype.bankapp.navigation.NavGraph
 import com.crype.bankapp.navigation.Screen
-import com.crype.bankapp.presentation.screen.AllTransactionsScreen
 import com.crype.bankapp.ui.theme.BankAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
-
         enableEdgeToEdge()
         setContent {
             BankAppTheme {
@@ -37,7 +36,10 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                 ) {
                     val navController = rememberNavController()
-                   NavGraph(navController = navController, startDestination = Screen.HomeScreen.route)
+                    NavGraph(
+                        navController = navController,
+                        startDestination = Screen.HomeScreen.route
+                    )
                 }
             }
         }

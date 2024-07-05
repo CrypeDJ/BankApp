@@ -13,11 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.crype.bankapp.R
-import com.crype.bankapp.domain.model.TransactionModel
+import com.crype.bankapp.data.model.TransactionsEntity
 import com.crype.bankapp.ui.theme.Green
 import com.crype.bankapp.ui.theme.Grey60
 import com.crype.bankapp.ui.theme.Grey65
@@ -28,10 +27,10 @@ import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
 fun TransactionInfo(
-    transactionModel: TransactionModel,
+    transactionModel: TransactionsEntity,
     onItemClick: () -> Unit
 ) {
-    val color: Color = when (transactionModel.transactionStatus) {
+    val color: Color = when (transactionModel.status) {
         "Executed" -> Green
         "Declined" -> Red
         else -> Yellow
@@ -55,14 +54,14 @@ fun TransactionInfo(
                     modifier = Modifier.padding(bottom = 2.dp)
                 )
                 Text(
-                    text = transactionModel.date,
+                    text = transactionModel.date.toString(),
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
                     color = Grey60,
                 )
                 Text(
-                    text = transactionModel.transactionStatus,
+                    text = transactionModel.status,
                     fontSize = 14.sp,
                     fontFamily = Typography.bodyMedium.fontFamily,
                     fontWeight = FontWeight.Normal,
@@ -88,13 +87,5 @@ fun TransactionInfo(
             color = Grey65,
             thickness = 0.5.dp
         )
-    }
-}
-
-@Preview
-@Composable
-fun Preview(){
-    TransactionInfo(transactionModel = TransactionModel()) {
-        
     }
 }

@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.crype.bankapp.domain.model.AccountModel
+import com.crype.bankapp.data.model.AccountEntity
 import com.crype.bankapp.presentation.components.AccountName
 import com.crype.bankingapp.ui.theme.Typography
 
 @Composable
 fun ChangeAccountScreen(
-    accountList: List<AccountModel>,
+    accountList: List<AccountEntity>,
     onSelectClick: (index: Int) -> Unit
 ) {
     Box(

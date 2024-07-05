@@ -14,10 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.crype.bankapp.presentation.components.ListView
 import com.crype.bankapp.presentation.components.TopBar
 import kotlinx.coroutines.launch
@@ -56,7 +54,8 @@ fun AllTransactionsScreen(
                 .padding(bottom = 50.dp)
         ) {
             ListView(
-                navController = navController
+                navController = navController,
+                true
             )
         }
     }
@@ -80,12 +79,4 @@ fun AllTransactionsScreen(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun AllTransactionsScreenPreview() {
-    AllTransactionsScreen(
-        navController = rememberNavController()
-    )
 }
