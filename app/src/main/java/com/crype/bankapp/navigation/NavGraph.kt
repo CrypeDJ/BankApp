@@ -26,8 +26,16 @@ fun NavGraph(
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
-        composable(route = Screen.AddScreen.route) {
-            AddScreen(navController)
+        composable(
+            route = Screen.AddScreen.route,
+            arguments = listOf(navArgument("accountId") {
+                type = NavType.IntType
+            })
+        ) { backStackEntry ->
+            val accountId = backStackEntry.arguments?.getInt("accountId")
+            if (accountId != null) {
+                AddScreen(navController = navController, accountId = accountId)
+            }
         }
         composable(route = Screen.AllTransactionsScreen.route) {
             AllTransactionsScreen(navController = navController)

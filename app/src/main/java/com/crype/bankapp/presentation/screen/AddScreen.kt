@@ -1,5 +1,7 @@
 package com.crype.bankapp.presentation.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,29 +14,34 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.crype.bankapp.navigation.Screen
 import com.crype.bankapp.presentation.components.EnterButton
 import com.crype.bankapp.presentation.components.EnterField
 import com.crype.bankapp.presentation.viewmodel.AddTransactionViewModel
 import com.crype.bankingapp.ui.theme.Typography
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddScreen(
     navController: NavController,
+    accountId: Int,
+    addTransactionViewModel: AddTransactionViewModel = hiltViewModel()
 ) {
-    val viewModel = AddTransactionViewModel()
-    val transactionInfoList by viewModel.transactionInfoList.collectAsState()
+    val transactionInfoList = listOf(
+        "Transaction was applied in",
+        "Transaction number",
+        "Transaction status",
+        "Amount"
+    )
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -60,13 +67,13 @@ fun AddScreen(
             ) {
                 itemsIndexed(transactionInfoList) { index, transaction ->
                     EnterField(
-                        title = transaction.title,
-                        keyboardType = when (transaction.title) {
+                        title = transaction,
+                        keyboardType = when (transaction) {
                             "Amount", "Date" -> KeyboardType.Number
                             else -> KeyboardType.Text
                         },
                         onValueChange = { newValue ->
-                            viewModel.updateTransaction(index, newValue)
+                            addTransactionViewModel.updateTransaction(index, newValue)
                         }
                     )
                 }
@@ -74,18 +81,10 @@ fun AddScreen(
             EnterButton(
                 label = "Okay",
                 onClick = {
-                    viewModel.getTransactionInfo(transactionInfoList)
+                    addTransactionViewModel.insertTransaction(accountId)
                     navController.navigate(route = Screen.HomeScreen.route)
                 }
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun AddScreenPreview() {
-    AddScreen(
-        rememberNavController()
-    )
 }

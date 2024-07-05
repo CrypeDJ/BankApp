@@ -14,22 +14,17 @@ import java.util.Date
         ForeignKey(
             entity = AccountEntity::class,
             parentColumns = ["id"],
-            childColumns = ["account_id"]
+            childColumns = ["account_id"],
+            onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class TransactionsEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
-
     @ColumnInfo(name = "account_id") val accountId: Int,
-
     @ColumnInfo(name = "sender_name") val senderName: String,
-
     val date: Date,
-
     val status: String,
-
     val money: String,
-
     val number: String
 )

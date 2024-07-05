@@ -16,7 +16,7 @@ import com.crype.bankapp.data.model.TransactionsEntity
     version = 1
 )
 @TypeConverters(DateConverter::class)
-abstract class AppDatabase: RoomDatabase() {
-    abstract fun accountDao(): AccountDao
-    abstract fun transactionDao(): TransactionDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract val accountDao: AccountDao
+    abstract val transactionDao: TransactionDao
 }

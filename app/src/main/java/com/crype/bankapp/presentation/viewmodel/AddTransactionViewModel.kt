@@ -1,44 +1,55 @@
 package com.crype.bankapp.presentation.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
-import com.crype.bankapp.domain.model.FieldData
-import com.crype.bankapp.domain.model.TransactionModel
+import androidx.lifecycle.viewModelScope
+import com.crype.bankapp.data.model.TransactionsEntity
+import com.crype.bankapp.domain.usecases.TransactionUseCases
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
+import javax.inject.Inject
 
-class AddTransactionViewModel : ViewModel() {
-    private val _transactionInfo = MutableStateFlow<TransactionModel?>(null)
-    val transactionInfo: StateFlow<TransactionModel?> get() = _transactionInfo
+@RequiresApi(Build.VERSION_CODES.O)
+@HiltViewModel
+class AddTransactionViewModel @Inject constructor(
+    private val transactionUseCases: TransactionUseCases
+) : ViewModel() {
 
-    private val _transactionInfoList = MutableStateFlow<List<FieldData>>(emptyList())
-    val transactionInfoList: StateFlow<List<FieldData>> get() = _transactionInfoList
-
-    init {
-        val initialTransactions = listOf(
-            FieldData("Transaction was applied in", mutableStateOf("")),
-            FieldData("Transaction number", mutableStateOf("")),
-            FieldData("Date", mutableStateOf("")),
-            FieldData("Transaction status", mutableStateOf("")),
-            FieldData("Amount", mutableStateOf(""))
+    private val _transactionInfo = MutableStateFlow(
+        TransactionsEntity(
+            id = 0,
+            accountId = 0,
+            senderName = "",
+            date = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+            status = "",
+            money = "",
+            number = ""
         )
-        _transactionInfoList.value = initialTransactions
+    )
+
+    fun insertTransaction(accountId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedTransaction = _transactionInfo.value.copy(
+                accountId = _transactionInfo.value.accountId
+            )
+            _transactionInfo.value = updatedTransaction
+            transactionUseCases.insertTransaction.invoke(_transactionInfo.value)
+        }
     }
 
     fun updateTransaction(index: Int, value: String) {
-        val updatedTransactions = _transactionInfoList.value.toMutableList()
-        updatedTransactions[index] =
-            updatedTransactions[index].copy(textField = mutableStateOf(value))
-        _transactionInfoList.value = updatedTransactions
-    }
-
-    fun getTransactionInfo(transactionInfo: List<FieldData>) {
-        val transactionInfoBuffer = TransactionModel()
-        transactionInfoBuffer.senderName = transactionInfo[0].textField.value
-        transactionInfoBuffer.transactionNumber = transactionInfo[1].textField.value
-        transactionInfoBuffer.date = transactionInfo[2].textField.value
-        transactionInfoBuffer.transactionStatus = transactionInfo[3].textField.value
-        transactionInfoBuffer.money = transactionInfo[4].textField.value
-        _transactionInfo.value = transactionInfoBuffer
+        val updatedTransaction = _transactionInfo.value.copy(
+            senderName = if (index == 0) value else _transactionInfo.value.senderName,
+            number = if (index == 1) value else _transactionInfo.value.number,
+            status = if (index == 2) value else _transactionInfo.value.status,
+            money = if (index == 3) value else _transactionInfo.value.money
+        )
+        _transactionInfo.value = updatedTransaction
     }
 }

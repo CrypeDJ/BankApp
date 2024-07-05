@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.google.dagger.hilt.android)
 }
 
 android {
@@ -62,18 +63,18 @@ dependencies {
     implementation(libs.androidx.material3)
 
     //Koin
-    implementation(libs.koin.androidx.compose)
-    implementation(libs.koin.core)
-    implementation(platform(libs.koin.bom))
-    testImplementation(libs.koin.text)
     implementation(libs.koin.android)
-    implementation(libs.koin.android.compat)
+    implementation(libs.koin.androidx.compose)
 
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
+
+    //Hilt
+    implementation (libs.hilt.android)
+    implementation (libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 
     //Navigation
     implementation (libs.androidx.navigation.compose)
@@ -83,6 +84,4 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
